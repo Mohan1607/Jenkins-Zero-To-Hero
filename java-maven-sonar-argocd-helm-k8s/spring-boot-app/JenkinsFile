@@ -9,7 +9,6 @@ pipeline {
       steps {
         sh 'echo passed'
         git branch: 'main', url: 'https://github.com/mohan1607/Jenkins-Zero-To-Hero.git'
-        sh ' docker --version'
       }
     }
     stage('Build and Test') {

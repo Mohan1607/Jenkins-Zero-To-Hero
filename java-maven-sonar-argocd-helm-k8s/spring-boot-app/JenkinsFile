@@ -12,27 +12,55 @@ pipeline {
             - cat
             tty: true
           - name: docker
-            image: docker:20.10.7
+            image: docker:latest
             command:
             - cat
             tty: true
+            volumeMounts:
+             - mountPath: /var/run/docker.sock
+               name: docker-sock
+          volumes:
+          - name: docker-sock
+            hostPath:
+              path: /var/run/docker.sock    
         '''
     }
   }
   stages {
-    stage('Run maven') {
+    stage('Clone') {
       steps {
         container('maven') {
-          sh 'mvn -version'
+          git branch: 'main', changelog: false, poll: false, url: 'https://https://github.com/Mohan1607/Jenkins-Zero-To-Hero.git'
+        }
+      }
+    }  
+    stage('Build-Jar-file') {
+      steps {
+        container('maven') {
+          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
+          //sh 'mvn package'
         }
       }
     }
-stage('Run Docker') {
+    stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker run hello-world'
+          sh 'docker build -t mohan1607/testing-image:latest .'
         }
       }
     }
+    stage('Login-Into-Docker') {
+      steps {
+        container('docker') {
+          sh 'docker login -u mohan1607 -p Venky@1607'
+      }
+    }
+    }
+     stage('Push-Images-Docker-to-DockerHub') {
+      steps {
+        container('docker') {
+          sh 'docker push mohan1607/testing-image:latest'
+      }
+    }
+     }
   }
-}

@@ -1,23 +1,44 @@
 pipeline {
-  agent any
+  //agent any
     //docker {
       //image 'abhishekf5/maven-abhishek-docker-agent:v1'
       //args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     //}
+agent {
+    kubernetes {
+        yaml """
+        apiVersion: v1
+        kind: Pod
+        spec:
+          - name: docker
+            image: docker:20.10
+            command:
+            - cat
+            tty: true
+          - name: maven
+            image: maven:3.9.4-eclipse-temurin-17
+            command:
+            - cat
+            tty: true
+        """
+    }
+}
+
   
   stages {
     stage('Checkout') {
       steps {
         sh 'echo passed'
         git branch: 'main', url: 'https://github.com/mohan1607/Jenkins-Zero-To-Hero.git'
-        sh 'docker --version'
       }
     }
     stage('Build and Test') {
       steps {
+       container('maven'){
         sh 'ls -ltr'
         // build the project and create a JAR file
         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
+}
       }
     }
     stage('Static Code Analysis') {

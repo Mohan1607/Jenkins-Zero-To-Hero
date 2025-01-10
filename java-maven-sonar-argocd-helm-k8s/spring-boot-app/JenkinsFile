@@ -8,8 +8,7 @@ agent {
     kubernetes{
     label 'kubeagent'
 }
-
-  
+} 
   stages {
     stage('Checkout') {
       steps {

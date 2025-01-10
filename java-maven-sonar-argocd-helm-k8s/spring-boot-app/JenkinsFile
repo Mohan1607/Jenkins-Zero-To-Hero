@@ -11,6 +11,11 @@ pipeline {
             command:
             - cat
             tty: true
+          - name: docker
+            image: docker:20.10.7
+            command:
+            - cat
+            tty: true
         '''
     }
   }
@@ -19,6 +24,13 @@ pipeline {
       steps {
         container('maven') {
           sh 'mvn -version'
+        }
+      }
+    }
+stage('Run Docker') {
+      steps {
+        container('docker') {
+          sh 'docker -version'
         }
       }
     }

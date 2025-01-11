@@ -90,9 +90,11 @@ pipeline {
                     BUILD_NUMBER=${BUILD_NUMBER}
                     ls -l
                     sed -i 's|image:mohan1607/ultimate-cicd:.*|image: mohan1607/ultimate-cicd:'${BUILD_NUMBER}'|' spring-boot-app-manifests/deployment.yaml
+                    echo "updated yaml file"
+                    cat spring-boot-app-manifests/deployment.yaml 
                     git add spring-boot-app-manifests/deployment.yaml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    # git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
             }
         }

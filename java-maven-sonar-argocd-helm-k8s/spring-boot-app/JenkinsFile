@@ -30,7 +30,8 @@ pipeline {
     stage('Clone') {
       steps {
         container('maven') {
-          git branch: 'main', changelog: false, poll: false, url: 'https://https://github.com/Mohan1607/Jenkins-Zero-To-Hero.git'
+          // git branch: 'main', changelog: false, poll: false, url: 'https://https://github.com/Mohan1607/Jenkins-Zero-To-Hero.git'
+         git branch: 'main', url: 'https://github.com/Mohan1607/Jenkins-Zero-To-Hero.git'
         }
       }
     }  

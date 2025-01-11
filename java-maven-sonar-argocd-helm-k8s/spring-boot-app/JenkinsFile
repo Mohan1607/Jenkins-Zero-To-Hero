@@ -52,7 +52,7 @@ pipeline {
     }
     stage('Login-Into-Docker') {
       environment {
-        DOCKER_USER = Mohan1607
+        DOCKER_USER ="mohan1607"
       }
       steps {
       withCredentials([string(credentialsId: 'docker', variable: 'DOCKER_PASSWD')]) {

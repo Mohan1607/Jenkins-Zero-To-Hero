@@ -44,9 +44,12 @@ pipeline {
       }
     }
     stage('Build-Docker-Image') {
+      environment {
+        DOCKER_IMAGE = "mohan1607/ultimate-cicd:${BUILD_NUMBER}"
+      }
       steps {
         container('docker') {
-          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t mohan1607/testing-image:latest .'
+          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
         }
       }
     }

@@ -46,9 +46,7 @@ pipeline {
     stage('Build-Docker-Image') {
       steps {
         container('maven') {
-          git branch: 'main', url: 'https://github.com/Mohan1607/Jenkins-Zero-To-Hero.git'
-          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app/'
-          sh 'docker build -t mohan1607/testing-image:latest .'
+          sh 'docker build -t mohan1607/testing-image:latest java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile'
         }
       }
     }

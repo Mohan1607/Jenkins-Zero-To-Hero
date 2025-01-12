@@ -89,7 +89,7 @@ pipeline {
                     git config user.name "Mohan Venkatesh"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     ls -l
-                    sed -i "s/tag: \"[^\"]*\"/tag: \"${BUILD_NUMBER}\"/" spring-boot-app/values.yaml
+                    sed -i 's|tag: .*|tag:'${BUILD_NUMBER}'|' spring-boot-app/values.yaml
                     echo "updated yaml file"
                     cat spring-boot-app/values.yaml 
                     git add spring-boot-app/values.yaml

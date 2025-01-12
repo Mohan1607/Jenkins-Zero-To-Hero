@@ -90,10 +90,11 @@ pipeline {
                     BUILD_NUMBER=${BUILD_NUMBER}
                     ls -l
                     sed -i 's|tag: .*|tag: '${BUILD_NUMBER}'|' spring-boot-app/values.yaml
+                    sed -i s/tag: "[^"]*"/tag: '${BUILD_NUMBER}'/ spring-boot-app/values.yaml
                     echo "updated yaml file"
                     cat spring-boot-app/values.yaml 
                     git add spring-boot-app/values.yaml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git commit -m "Update chart image to version ${BUILD_NUMBER}"
                     git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
             }

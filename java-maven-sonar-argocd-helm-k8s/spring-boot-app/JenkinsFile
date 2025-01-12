@@ -75,25 +75,26 @@ pipeline {
       }
     }
      }
- stage('Update Deployment File') {
+stage('Update Deployment File') {
         environment {
-            GIT_REPO_NAME = "JavaApp-CD"
+            GIT_REPO_NAME = "javaappcd"
             GIT_USER_NAME = "Mohan1607"
         }
         steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
-                    git clone "https://github.com/Mohan1607/JavaApp-CD.git"
-                    cd JavaApp-CD
+                    git clone "https://github.com/Mohan1607/javaappcd.git"
+                    cd javaappcd
                     git config user.email "venkyravipati99@gmail.com"
                     git config user.name "Mohan Venkatesh"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     ls -l
-                    sed -i 's|image: mohan1607/ultimate-cicd:.*|image: mohan1607/ultimate-cicd:'${BUILD_NUMBER}'|' spring-boot-app-manifests/deployment.yaml
+                    sed -i 's|tag: .*|tag: '${BUILD_NUMBER}'|' spring-boot-app/values.yaml
+                    # sed -i s/tag: "[^"]*"/tag: '${BUILD_NUMBER}'/ spring-boot-app/values.yaml
                     echo "updated yaml file"
-                    cat spring-boot-app-manifests/deployment.yaml 
-                    git add spring-boot-app-manifests/deployment.yaml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    cat spring-boot-app/values.yaml 
+                    git add spring-boot-app/values.yaml
+                    git commit -m "Update chart image to version ${BUILD_NUMBER}"
                     git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
             }
